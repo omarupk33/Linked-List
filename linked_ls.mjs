@@ -5,7 +5,7 @@ class node{
     }
 }
 
-class linkedList{
+export class LinkedList{
     constructer(){
         this.head = null
     }
@@ -62,8 +62,18 @@ class linkedList{
         return tmp
     }
     at(index){
-        return
+        let current_index = 0
+        let tmp = this.head
+        while(tmp){
+            if(current_index === index){
+                return tmp.value
+            }
+            current_index +=1
+            tmp = tmp.next
+        }
+        return undefined
     }
+
     pop(){
         if(!this.head){
             return undefined
@@ -72,7 +82,7 @@ class linkedList{
         const popHead = this.head
         this.head = this.head.next
 
-        return popHead
+        return popHead.value
     }
 
     contains(value){
@@ -121,22 +131,61 @@ class linkedList{
     return addToString
     }
     insertAt(index, ...values){
-        if(!this.head){
-            return undefined
+        if(index >= this.size() || index < 0){
+            throw new RangeError()
         }
-        let tmp = this.head
-        
+
+
+
+
+        let curr = this.head
+        let prev = null
+
+        if(index === 0){
+            for(let val of values.reverse()){
+            let inserted_node = new node(val)
+            this.prepend(inserted_node.value)
+        }
+        return this.head
+        }
+ 
+
+        while(curr && curr.next && curr.value !== this.at(index)){
+            prev = curr
+            curr = curr.next
+        }
+
+        prev = curr
+        curr = curr.next
+        for(let val of values){
+            let inserted_node = new node(val)
+            prev.next = inserted_node
+            prev = inserted_node
+        }
+        prev.next = curr
+        return this.head
+
     }
     removeAt(index){
-        if(!this.head){
-            return undefined
+        if(index >= this.size() || index < 0){
+            throw new RangeError()
         }
-        let tmp = this.head
-        let prev = null
-        while(tmp){
-            if()
-        }
-    }
-}
 
-let linked_list = new linkedList()
+        if(index === 0){
+            this.pop()
+            return this.head
+        }
+
+        let curr = this.head
+        let prev = null
+
+        while(curr && curr.next && curr.value !== this.at(index)){
+            prev = curr
+            curr = curr.next
+        }
+
+        curr = curr.next
+        prev.next = curr
+        return this.head
+}
+}
